@@ -1,18 +1,27 @@
 package com.assignement.entities;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Account {
 
 	@Id
-	@Column
+	@Column(name = "account_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer accountId;
 
 	@Column
@@ -27,16 +36,18 @@ public class Account {
 	@Column
 	Boolean is_closed;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
-	Customer customer;
+	@JsonBackReference
+	private Customer customer;
 
+	@OneToMany
+	Set<Transaction> transaction;
+	
 	public Account() {
 	}
 
-	public Account(Integer accountId, String title, String description, Date creation_date, Boolean is_closed) {
-		super();
-		this.accountId = accountId;
+	public Account(String title, String description, Date creation_date, Boolean is_closed) {
 		this.title = title;
 		this.description = description;
 		this.creation_date = creation_date;
@@ -81,6 +92,22 @@ public class Account {
 
 	public void setIs_closed(Boolean is_closed) {
 		this.is_closed = is_closed;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Set<Transaction> getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Set<Transaction> transaction) {
+		this.transaction = transaction;
 	}
 
 }

@@ -1,37 +1,44 @@
 package com.assignement.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Customer {
 
 	@Id
 	@Column(name = "customer_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer customerId;
-	
+
 	@Column
 	String name;
-	
-	@Column 
+
+	@Column
 	String surname;
-	
+
 	@Column
 	String adresse;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch = FetchType.EAGER)
+	@JsonManagedReference
 	Set<Account> accounts;
-	
+
 	public Customer() {
 	}
-	
+
 	public Customer(String name, String surname, String addresse) {
 		this.name = name;
 		this.surname = surname;
@@ -68,5 +75,27 @@ public class Customer {
 
 	public void setAddresse(String addresse) {
 		this.adresse = addresse;
+	}
+
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public void addAccount(Account account) {
+		if (this.getAccounts() == null || this.getAccounts().isEmpty())
+			this.accounts = new HashSet<Account>();
+		this.accounts.add(account);
 	}
 }
