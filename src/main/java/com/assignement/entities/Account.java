@@ -1,8 +1,10 @@
 package com.assignement.entities;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,9 +43,10 @@ public class Account {
 	@JsonBackReference
 	private Customer customer;
 
-	@OneToMany
-	Set<Transaction> transaction;
-	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "account", fetch = FetchType.LAZY)
+	@JsonManagedReference
+	Set<Transaction> transactions;
+
 	public Account() {
 	}
 
@@ -102,12 +105,18 @@ public class Account {
 		this.customer = customer;
 	}
 
-	public Set<Transaction> getTransaction() {
-		return transaction;
+	public Set<Transaction> getTransactions() {
+		return transactions;
 	}
 
-	public void setTransaction(Set<Transaction> transaction) {
-		this.transaction = transaction;
+	public void setTransactions(Set<Transaction> transaction) {
+		this.transactions = transaction;
+	}
+
+	public void addTransaction(Transaction transaction) {
+		if (this.transactions == null)
+			this.transactions = new HashSet<Transaction>();
+		this.transactions.add(transaction);
 	}
 
 }
