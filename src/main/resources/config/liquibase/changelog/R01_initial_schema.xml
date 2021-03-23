@@ -48,6 +48,12 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 		<loadData file="config/liquibase/changelog/csv/customers.csv"
 			relativeToChangelogFile="false" separator="," tableName="CUSTOMER">
 		</loadData>
+		<loadData file="config/liquibase/changelog/csv/accounts.csv"
+			relativeToChangelogFile="false" separator="," tableName="ACCOUNT">
+		</loadData>
+		<loadData file="config/liquibase/changelog/csv/transactions.csv"
+			relativeToChangelogFile="false" separator="," tableName="TRANSACTION">
+		</loadData>
 
 	</changeSet>
 

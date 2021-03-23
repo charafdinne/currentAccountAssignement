@@ -1,0 +1,2 @@
+account_id,title,description,creation_date,is_closed,customer_id
+1,title1,desc1,,false,1
