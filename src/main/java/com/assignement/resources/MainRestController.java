@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assignement.entities.Account;
+import com.assignement.entities.AccountCreationBody;
 import com.assignement.entities.Customer;
 import com.assignement.entities.Transaction;
 import com.assignement.exceptions.DAOException;
@@ -25,20 +27,21 @@ public class MainRestController {
 	CustomerService customerService;
 
 	@GetMapping("/getCustomer")
-	Customer getCustomer(@RequestParam String id) throws DAOException {		
-		Customer res = this.customerService.findCustomerById(Integer.valueOf(id));
+	Customer getCustomer(@RequestParam Integer id) throws DAOException {		
+		Customer res = this.customerService.findCustomerById(id);
 		return res;
 	}
 	
-	@GetMapping("/createAccount")
-	@PostMapping void createAccount(@RequestParam Integer id,@RequestParam Integer balance) throws DAOException {
-		Customer res = this.customerService.findCustomerById(id);
+	@PostMapping("/createAccount")
+	Customer createAccount(@RequestBody AccountCreationBody body) throws DAOException {
+		Customer res = this.customerService.findCustomerById(body.getCustomerId());
 		Account account = new Account("title", "desc", new Date(), false);
-		Transaction transaction = new Transaction(balance,true);
+		Transaction transaction = new Transaction(body.getBalance(),true);
 		transaction.setAccount(account);
 		account.addTransaction(transaction);
 		res.addAccount(account);
 		account.setCustomer(res);
 		customerService.saveCustomer(res);
+		return res;
 	}
 }
