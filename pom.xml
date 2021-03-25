@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.assignement</groupId>
 	<artifactId>CurrentAccountAssignement</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>CurrentAccountAssignement</name>
 	<description>Project for &quot;current account&quot; assignement</description>
 	<properties>
