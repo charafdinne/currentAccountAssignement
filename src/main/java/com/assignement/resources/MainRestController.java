@@ -33,9 +33,11 @@ public class MainRestController {
 	}
 	
 	@PostMapping("/createAccount")
-	Customer createAccount(@RequestBody AccountCreationBody body) throws DAOException {
+	Customer createAccount(@RequestBody AccountCreationBody body) throws Exception {
 		Customer res = this.customerService.findCustomerById(body.getCustomerId());
 		Account account = new Account("title", "desc", new Date(), false);
+		if(body.getBalance() == null)
+			throw new Exception("balance cannot be null");
 		Transaction transaction = new Transaction(body.getBalance(),true);
 		transaction.setAccount(account);
 		account.addTransaction(transaction);
