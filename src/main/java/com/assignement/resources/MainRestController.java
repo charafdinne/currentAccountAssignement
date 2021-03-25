@@ -27,18 +27,22 @@ public class MainRestController {
 	CustomerService customerService;
 
 	@GetMapping("/getCustomer")
-	Customer getCustomer(@RequestParam Integer id) throws DAOException {		
+	Customer getCustomer(@RequestParam Integer id) throws Exception {
+		if (id == null)
+			throw new Exception("cutsomer Id cannot be null");
 		Customer res = this.customerService.findCustomerById(id);
 		return res;
 	}
-	
+
 	@PostMapping("/createAccount")
 	Customer createAccount(@RequestBody AccountCreationBody body) throws Exception {
+		if (body.getCustomerId() == null)
+			throw new Exception("cutsomer Id cannot be null");
 		Customer res = this.customerService.findCustomerById(body.getCustomerId());
 		Account account = new Account("title", "desc", new Date(), false);
-		if(body.getBalance() == null)
+		if (body.getBalance() == null)
 			throw new Exception("balance cannot be null");
-		Transaction transaction = new Transaction(body.getBalance(),true);
+		Transaction transaction = new Transaction(body.getBalance(), true);
 		transaction.setAccount(account);
 		account.addTransaction(transaction);
 		res.addAccount(account);
