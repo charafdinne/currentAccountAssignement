@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class MainRestController {
 
 	Logger logger = LoggerFactory.getLogger(MainRestController.class);
-	
+
 	@Autowired
 	CustomerService customerService;
 
@@ -36,7 +36,7 @@ public class MainRestController {
 			throw new Exception("cutsomer Id cannot be null");
 		}
 		Customer res = this.customerService.findCustomerById(id);
-		logger.info("found customer for id : " + id + " : "  + res);
+		logger.info("found customer for id : " + id + " : " + res);
 		return res;
 	}
 
@@ -50,6 +50,8 @@ public class MainRestController {
 		Account account = new Account("title", "desc", new Date(), false);
 		if (body.getBalance() == null)
 			throw new Exception("balance cannot be null");
+		if (body.getBalance() == 0)
+			return res;
 		Transaction transaction = new Transaction(body.getBalance(), true);
 		transaction.setAccount(account);
 		account.addTransaction(transaction);
