@@ -30,7 +30,7 @@ public class MainRestController {
 	CustomerService customerService;
 
 	@GetMapping("/getCustomer")
-	Customer getCustomer(@RequestParam Integer id) throws Exception {
+	public Customer getCustomer(@RequestParam Integer id) throws Exception {
 		if (id == null) {
 			logger.error("cutsomer Id cannot be null");
 			throw new Exception("cutsomer Id cannot be null");
@@ -41,7 +41,7 @@ public class MainRestController {
 	}
 
 	@PostMapping("/createAccount")
-	Customer createAccount(@RequestBody AccountCreationBody body) throws Exception {
+	public Customer createAccount(@RequestBody AccountCreationBody body) throws Exception {
 		if (body.getCustomerId() == null) {
 			logger.error("cutsomer Id cannot be null");
 			throw new Exception("cutsomer Id cannot be null");

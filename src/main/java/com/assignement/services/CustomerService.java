@@ -34,4 +34,16 @@ public class CustomerService {
 		if (customer == null)
 			throw new DAOException("500", "cannot persist customer something went wrong");
 	}
+
+	@Transactional
+	public Customer finCustomrByName(String name) throws DAOException {
+		Customer res = null;
+		try {
+			res = customerRepository.findByName(name).get();
+		} catch (NoSuchElementException e) {
+			throw new DAOException("404", "No customer found for provided Name : " + name + e.getMessage());
+		}
+		return res;
+	}
+	
 }
